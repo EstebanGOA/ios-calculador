@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:testing/components/round_circle.dart';
 import 'package:testing/components/round_rectangle.dart';
 
@@ -37,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double secondOperand = 0.0;
   String operation = "";
   bool isNewInput = true;
+  bool isNewOperation = true;
   bool isDecimal = false;
 
   void clear() {
@@ -45,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
     secondOperand = 0.0;
     operation = "";
     isNewInput = true;
+    isNewOperation = true;
   }
 
   void updateOutput(double value) {
@@ -58,9 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void calculate() {
+
+    if (isNewOperation) {
+      isNewOperation = false;
+      secondOperand = double.parse(output);
+    } else {
+      firstOperand = double.parse(output);
+    }
+
     if (operation.isNotEmpty) {
       double value = 0.0;
-      secondOperand = double.parse(output);
+      // secondOperand = double.parse(output);
       switch(operation) {
         case '+':
           value = firstOperand + secondOperand;
@@ -76,16 +87,18 @@ class _MyHomePageState extends State<MyHomePage> {
           break;
       }
       updateOutput(value);
-      operation = "";
-      isNewInput = true;
+      // operation = "";
+      isNewOperation = true;
+      // isNewInput = true;
       isDecimal = false;
     }
   }
 
   void setOperation(String operation) {
-    if (this.operation.isNotEmpty) {
-      calculate();
+    if (isNewOperation) {
+      secondOperand = double.parse(output);
     }
+
     firstOperand = double.parse(output);
     this.operation = operation;
     isNewInput = true;
@@ -141,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
@@ -156,7 +170,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           Text(
+                            overflow: TextOverflow.clip,
+                            textAlign: TextAlign.right,
                             style: const TextStyle(
+                              fontFamily: "Helvetica",
                               color: Colors.white,
                               fontSize: 90,
                             ),
@@ -243,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RoundRectangle("0", onPressed),
+                    RoundRectangle("0", onPressed, textAlign: TextAlign.left,),
                     RoundCircle(".", onPressed),
                     RoundCircle("=", onPressed,
                         textColor: Colors.white,

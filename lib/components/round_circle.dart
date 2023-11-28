@@ -23,13 +23,15 @@ class RoundCircle extends StatelessWidget {
             backgroundColor: circleColor ?? const Color(0xFF505050),
         ),
         onPressed: () => onPressed(message),
-        child: Text(
-            textAlign: textAlign,
-            style: TextStyle(
-            color: textColor ?? Colors.white,
-              fontSize: 35,
-          ),
-          message,
+
+      child: Text(
+        message,
+        style: TextStyle(
+          color: textColor ?? Colors.white,
+          fontSize: 35,
+        ),
+
+
         )
     );
   }

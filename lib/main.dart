@@ -33,9 +33,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String resetButton = "AC";
   String output = "";
-  double firstOperand = 0.0;
-  double secondOperand = 0.0;
+  int firstOperand = 0;
+  int secondOperand = 0;
   String operation = "";
   bool isNewInput = true;
   bool isNewOperation = true;
@@ -43,34 +44,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void clear() {
     output = "";
-    firstOperand = 0.0;
-    secondOperand = 0.0;
+    firstOperand = 0;
+    secondOperand = 0;
     operation = "";
     isNewInput = true;
     isNewOperation = true;
   }
 
-  void updateOutput(double value) {
-    if (value != value.toInt()) {
+  void partialClear() {
+    resetButton = "AC";
+    output = "";
+    isNewInput = true;
+  }
+
+  void updateOutput(int value) {
       output = value.toString();
-      isDecimal = true;
-    } else {
-      output = value.toInt().toString();
-      isDecimal = false;
-    }
   }
 
   void calculate() {
 
     if (isNewOperation) {
       isNewOperation = false;
-      secondOperand = double.parse(output);
-    } else {
-      firstOperand = double.parse(output);
+      secondOperand = int.parse(output);
     }
 
     if (operation.isNotEmpty) {
-      double value = 0.0;
+      int value = 0;
       // secondOperand = double.parse(output);
       switch(operation) {
         case '+':
@@ -83,38 +82,40 @@ class _MyHomePageState extends State<MyHomePage> {
           value = firstOperand * secondOperand;
           break;
         case '÷':
-          value = firstOperand / secondOperand;
+          value = firstOperand ~/ secondOperand;
           break;
       }
       updateOutput(value);
-      // operation = "";
-      isNewOperation = true;
-      // isNewInput = true;
-      isDecimal = false;
+      operation = "";
+      //isNewOperation = true;
+      isNewInput = true;
     }
   }
 
   void setOperation(String operation) {
     if (isNewOperation) {
-      secondOperand = double.parse(output);
+      firstOperand = int.parse(output);
+      this.operation = operation;
+      isNewOperation = false;
+    } else {
+      secondOperand = int.parse(output);
+      calculate();
+      firstOperand = int.parse(output);
+      this.operation = operation;
     }
-
-    firstOperand = double.parse(output);
-    this.operation = operation;
     isNewInput = true;
-    isDecimal = false;
   }
 
-  void input(double value) {
+  void input(int value) {
+    resetButton = "C";
+
+    if (output.length > 7) return;
+
     if (isNewInput) {
       updateOutput(value);
       isNewInput = false;
     } else {
-      if (isDecimal) {
-        value = double.parse(output + value.toInt().toString());
-      } else {
-        value = double.parse(output) * 10 + value;
-      }
+      value = int.parse(output) * 10 + value;
       updateOutput(value);
     }
   }
@@ -123,17 +124,23 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if (action == 'AC') {
         clear();
+      } else if (action == 'C') {
+        partialClear();
       } else if (action == '=') {
+        secondOperand = int.parse(output);
         calculate();
-      } else if (action == '.') {
-        if (isDecimal == true) return;
-        isDecimal = true;
-        output = '$output.';
+      }else if (action == '+/-') {
+        updateOutput(int.parse(output) * -1);
+      } else if (action == '%') {
+        updateOutput(int.parse(output) ~/ 100);
+      }
+      else if (action == '.') {
+        // Decimal numbers not implemented.
         // Negative numbers not implemented.
       } else if ("+-×÷%".contains(action)) {
         setOperation(action);
       } else {
-        input(double.parse(action));
+        input(int.parse(action));
       }
     });
   }
@@ -187,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RoundCircle(
-                      "AC",
+                      resetButton,
                       onPressed,
                       textColor: Colors.black,
                       circleColor: const Color(0xffd3d3d1),
@@ -260,7 +267,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RoundRectangle("0", onPressed, textAlign: TextAlign.left,),
+                    RoundRectangle("0", onPressed),
                     RoundCircle(".", onPressed),
                     RoundCircle("=", onPressed,
                         textColor: Colors.white,

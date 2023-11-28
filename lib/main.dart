@@ -58,11 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void updateOutput(int value) {
-      output = value.toString();
+    output = value.toString();
   }
 
   void calculate() {
-
     if (isNewOperation) {
       isNewOperation = false;
       secondOperand = int.parse(output);
@@ -71,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (operation.isNotEmpty) {
       int value = 0;
       // secondOperand = double.parse(output);
-      switch(operation) {
+      switch (operation) {
         case '+':
           value = firstOperand + secondOperand;
           break;
@@ -129,12 +128,11 @@ class _MyHomePageState extends State<MyHomePage> {
       } else if (action == '=') {
         secondOperand = int.parse(output);
         calculate();
-      }else if (action == '+/-') {
+      } else if (action == '+/-') {
         updateOutput(int.parse(output) * -1);
       } else if (action == '%') {
         updateOutput(int.parse(output) ~/ 100);
-      }
-      else if (action == '.') {
+      } else if (action == '.') {
         // Decimal numbers not implemented.
         // Negative numbers not implemented.
       } else if ("+-×÷%".contains(action)) {
@@ -161,7 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
@@ -193,29 +190,37 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RoundCircle(
-                      resetButton,
-                      onPressed,
-                      textColor: Colors.black,
-                      circleColor: const Color(0xffd3d3d1),
+                    Expanded(
+                      child: RoundCircle(
+                        resetButton,
+                        onPressed,
+                        textColor: Colors.black,
+                        circleColor: const Color(0xffd3d3d1),
+                      ),
                     ),
-                    RoundCircle(
-                      "+/-",
-                      onPressed,
-                      textColor: Colors.black,
-                      circleColor: const Color(0xffd3d3d1),
+                    Expanded(
+                      child: RoundCircle(
+                        "+/-",
+                        onPressed,
+                        textColor: Colors.black,
+                        circleColor: const Color(0xffd3d3d1),
+                      ),
                     ),
-                    RoundCircle(
-                      "%",
-                      onPressed,
-                      textColor: Colors.black,
-                      circleColor: const Color(0xffd3d3d1),
+                    Expanded(
+                      child: RoundCircle(
+                        "%",
+                        onPressed,
+                        textColor: Colors.black,
+                        circleColor: const Color(0xffd3d3d1),
+                      ),
                     ),
-                    RoundCircle(
-                      "÷",
-                      onPressed,
-                      textColor: Colors.white,
-                      circleColor: const Color(0xfffd9401),
+                    Expanded(
+                      child: RoundCircle(
+                        "÷",
+                        onPressed,
+                        textColor: Colors.white,
+                        circleColor: const Color(0xfffd9401),
+                      ),
                     ),
                   ],
                 ),
@@ -225,12 +230,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RoundCircle("7", onPressed),
-                    RoundCircle("8", onPressed),
-                    RoundCircle("9", onPressed),
-                    RoundCircle("×", onPressed,
-                        textColor: Colors.white,
-                        circleColor: Color(0xfffd9401)),
+                    Expanded(child: RoundCircle("7", onPressed)),
+                    Expanded(child: RoundCircle("8", onPressed)),
+                    Expanded(child: RoundCircle("9", onPressed)),
+                    Expanded(
+                      child: RoundCircle("×", onPressed,
+                          textColor: Colors.white,
+                          circleColor: Color(0xfffd9401)),
+                    ),
                   ],
                 ),
               ),
@@ -239,12 +246,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RoundCircle("4", onPressed),
-                    RoundCircle("5", onPressed),
-                    RoundCircle("6", onPressed),
-                    RoundCircle("-", onPressed,
-                        textColor: Colors.white,
-                        circleColor: Color(0xfffd9401)),
+                    Expanded(child: RoundCircle("4", onPressed)),
+                    Expanded(child: RoundCircle("5", onPressed)),
+                    Expanded(child: RoundCircle("6", onPressed)),
+                    Expanded(
+                      child: RoundCircle("-", onPressed,
+                          textColor: Colors.white,
+                          circleColor: Color(0xfffd9401)),
+                    ),
                   ],
                 ),
               ),
@@ -253,12 +262,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RoundCircle("1", onPressed),
-                    RoundCircle("2", onPressed),
-                    RoundCircle("3", onPressed),
-                    RoundCircle("+", onPressed,
-                        textColor: Colors.white,
-                        circleColor: Color(0xfffd9401)),
+                    Expanded(child: RoundCircle("1", onPressed)),
+                    Expanded(child: RoundCircle("2", onPressed)),
+                    Expanded(child: RoundCircle("3", onPressed)),
+                    Expanded(
+                      child: RoundCircle("+", onPressed,
+                          textColor: Colors.white,
+                          circleColor: Color(0xfffd9401)),
+                    ),
                   ],
                 ),
               ),
@@ -267,11 +278,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RoundRectangle("0", onPressed),
-                    RoundCircle(".", onPressed),
-                    RoundCircle("=", onPressed,
-                        textColor: Colors.white,
-                        circleColor: Color(0xfffd9401)),
+                    Expanded(flex: 2, child: RoundRectangle("0", onPressed, textAlign: TextAlign.left,)),
+
+                    Expanded(child: RoundCircle(".", onPressed)),
+                    Expanded(
+                      child: RoundCircle("=", onPressed,
+                          textColor: Colors.white,
+                          circleColor: Color(0xfffd9401)),
+                    ),
                   ],
                 ),
               ),
